@@ -9,6 +9,9 @@
     },
     {
       "name": "Üye İşlemleri"
+    },
+    {
+      "name": "Üye Bilgi Yazısı Alma"
     }
   ],
   "info": {
@@ -543,12 +546,108 @@
         ]
       }
     },
-    "/document": {
-      "get": {
-        "summary": "Your GET endpoint",
-        "tags": [],
-        "responses": {},
-        "operationId": "get-document"
+    "/document/info/membership-info": {
+      "parameters": [],
+      "post": {
+        "summary": "Üye Bilgi Yazısı Sorgulama",
+        "operationId": "post-document-info-membership-info",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "associationName": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "expireDate": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "language": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "registrationNumber": {
+                          "type": "number"
+                        },
+                        "companyName": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "taxNumber": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "associationName",
+                        "expireDate",
+                        "language",
+                        "registrationNumber",
+                        "companyName",
+                        "taxNumber"
+                      ]
+                    },
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "type": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "statusCode": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "success",
+                    "type",
+                    "statusCode"
+                  ]
+                },
+                "examples": {
+                  "Başarılı İşlem Sonucu": {
+                    "value": {
+                      "data": {
+                        "associationName": "Makine ve Aksamları İhracatçıları Birliği ",
+                        "expireDate": "2020-12-31T00:00:00",
+                        "language": "TÜRKÇE",
+                        "registrationNumber": 1234,
+                        "companyName": "AAA MAKİNA SAN. TİC. A. Ş. ",
+                        "taxNumber": "1234567890"
+                      },
+                      "success": true,
+                      "statusCode": 200
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMembershipInfoDocumentRequestModel"
+              }
+            }
+          }
+        },
+        "description": "Üye bilgi yazısı oluşturulmadan önce belge içeriğinde yer alacak değerleri görmek için kulanılır.",
+        "tags": [
+          "Barkodlu Belge İşlemleri",
+          "Üye Bilgi Yazısı Alma"
+        ]
       }
     },
     "/document/create/membership-info": {
@@ -558,50 +657,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "description": "",
-                "type": "object",
-                "properties": {
-                  "requestedBy": {
-                    "type": "string",
-                    "minLength": 11,
-                    "description": "İşlemi yapan kullanıcının T.C. Kimlik numarası"
-                  },
-                  "taxNumber": {
-                    "type": "string",
-                    "minLength": 1,
-                    "description": "Belgesi oluşturulacak firmanın vergi kimlik numarası"
-                  },
-                  "associationId": {
-                    "type": "string",
-                    "minLength": 1,
-                    "description": "Belgenin talep edildiği Birliğe ait Online işlemler id'si. Bkz: Üyelik Sorgulama"
-                  },
-                  "lang": {
-                    "type": "string",
-                    "minLength": 2,
-                    "description": "ISO2 formatında belgenin alınacağı dil",
-                    "enum": [
-                      "ar",
-                      "de",
-                      "en",
-                      "es",
-                      "fr",
-                      "it",
-                      "ja",
-                      "ru",
-                      "tr",
-                      "zh"
-                    ],
-                    "example": "tr",
-                    "maxLength": 2
-                  }
-                },
-                "required": [
-                  "requestedBy",
-                  "taxNumber",
-                  "associationId",
-                  "lang"
-                ]
+                "$ref": "#/components/schemas/CreateMembershipInfoDocumentRequestModel"
               },
               "examples": {
                 "example-1": {
@@ -660,7 +716,151 @@
           }
         },
         "tags": [
-          "Barkodlu Belge İşlemleri"
+          "Barkodlu Belge İşlemleri",
+          "Üye Bilgi Yazısı Alma"
+        ]
+      }
+    },
+    "/documents/membership-info": {
+      "post": {
+        "summary": "Üye Bilgi Yazısı Listesi",
+        "operationId": "post-documents-membership-info",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "minItems": 1,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "description": "Belge id"
+                          },
+                          "code": {
+                            "type": "string",
+                            "description": "Belge kodu"
+                          },
+                          "companyName": {
+                            "type": "string",
+                            "description": "Belgenin verildiği firma unvanı"
+                          },
+                          "taxNumber": {
+                            "type": "string",
+                            "description": "Belgenin verildiği firma vergi kimlik no"
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "Belge ile ilgili ek açıklama içerir. Belgenin hangi birlikten hangi dilde talep edildiği bilgisi yer alır."
+                          },
+                          "languageCode": {
+                            "type": "string",
+                            "description": "ISO2 Formatında belge dili"
+                          },
+                          "languageName": {
+                            "type": "string",
+                            "description": "BElge dili"
+                          },
+                          "documentTypeId": {
+                            "type": "number",
+                            "description": "Belge tipi idsi"
+                          },
+                          "documentTypeText": {
+                            "type": "string",
+                            "description": "Belge tipi"
+                          },
+                          "createdOn": {
+                            "type": "string",
+                            "description": "ISO 8601 formatında belge oluşturulma tarihi"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "code",
+                          "companyName",
+                          "taxNumber",
+                          "description",
+                          "languageCode",
+                          "languageName",
+                          "documentTypeId",
+                          "documentTypeText",
+                          "createdOn"
+                        ]
+                      }
+                    },
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "statusCode": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                },
+                "examples": {
+                  "Başarılı işlem sonucu": {
+                    "value": {
+                      "data": [
+                        {
+                          "id": "f03b78ec-8fb0-494d-8020-a4ca5713f498",
+                          "code": "TME01-D5EB-9FF7-4B82",
+                          "companyName": "AAA MAKİNA SAN. TİC. A. Ş. ",
+                          "taxNumber": "1234567890",
+                          "description": "[ EN ] - Makine ve Aksamları İhracatçıları Birliği ",
+                          "languageCode": "tr",
+                          "languageName": "Türkçe",
+                          "documentTypeId": 5002,
+                          "documentTypeText": "Üyelik Bilgi Yazısı",
+                          "createdOn": "2020-11-07T13:27:17.1353638Z"
+                        },
+                        {
+                          "id": "69070b9f-a6fa-4895-b0a3-15bbffe63ae2",
+                          "code": "TME01-9FEF-7266-4C1C",
+                          "companyName": "AAA MAKİNA SAN. TİC. A. Ş. ",
+                          "taxNumber": "1234567890",
+                          "description": "[ TR ] - Makine ve Aksamları İhracatçıları Birliği ",
+                          "languageCode": "tr",
+                          "languageName": "Türkçe",
+                          "documentTypeId": 5002,
+                          "documentTypeText": "Üyelik Bilgi Yazısı",
+                          "createdOn": "2020-11-07T13:24:10.3972334Z"
+                        }
+                      ],
+                      "success": true,
+                      "statusCode": 200
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Kullanıcı tarafından bir firma adına oluşturulan **Üye Bilgi Yazısı** listesini almak için kullanılır",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaxNumberRequest"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Barkodlu Belge İşlemleri",
+          "Üye Bilgi Yazısı Alma"
         ]
       }
     }
@@ -753,7 +953,7 @@
             "maxLength": 11,
             "example": "1234567891"
           },
-          "tckn": {
+          "requestedBy": {
             "type": "string",
             "description": "Sorguyu yapan kullanıcının T.C. Kimlik numarası"
           }
@@ -832,6 +1032,47 @@
             "description": "İşlem durum kodu"
           }
         }
+      },
+      "CreateMembershipInfoDocumentRequestModel": {
+        "title": "Barkodlu Belge Oluşturma Talebi",
+        "type": "object",
+        "properties": {
+          "requestedBy": {
+            "type": "string",
+            "minLength": 11,
+            "description": "İşlemi yapan kullanıcının T.C. Kimlik numarası"
+          },
+          "taxNumber": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Belgesi oluşturulacak firmanın vergi kimlik numarası"
+          },
+          "associationId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Belgenin talep edildiği Birliğe ait Online işlemler id'si. Bkz: Üyelik Sorgulama"
+          },
+          "lang": {
+            "type": "string",
+            "minLength": 2,
+            "description": "ISO2 formatında belgenin alınacağı dil",
+            "enum": [
+              "ar",
+              "de",
+              "en",
+              "es",
+              "fr",
+              "it",
+              "ja",
+              "ru",
+              "tr",
+              "zh"
+            ],
+            "example": "tr",
+            "maxLength": 2
+          }
+        },
+        "description": "Barkodlu bir belge oluşturulurken gönderilen parametreleri içerir. Her belge için fakrlı parametre"
       }
     },
     "securitySchemes": {
