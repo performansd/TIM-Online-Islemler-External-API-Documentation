@@ -460,7 +460,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TAxNumberRequest"
+                "$ref": "#/components/schemas/TaxNumberRequest"
               },
               "examples": {
                 "example-1": {
