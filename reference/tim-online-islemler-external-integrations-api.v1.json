@@ -1,0 +1,659 @@
+{
+  "openapi": "3.0.0",
+  "tags": [
+    {
+      "name": "Genel Bakış"
+    },
+    {
+      "name": "Barkodlu Belge İşlemleri"
+    },
+    {
+      "name": "Üye İşlemleri"
+    }
+  ],
+  "info": {
+    "title": "TİM Online İşlemler - Entegrasyon API",
+    "version": "1.0",
+    "description": "TİM Online İşlemler üzerinden sağlanan hizmetlerden diğer kurumların yazılım altyapıları ile entegrasyon sağlamak için kullanılan API metotları ve bu metotların nasıl kullanıldığına dair bilgileri içermektedir.",
+    "contact": {
+      "name": "Performans Teknik Destek",
+      "url": "https://www.performans.com",
+      "email": "destek@performans.com"
+    },
+    "license": {
+      "name": "GNU Public License"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://online.tim.org.tr/api/v1/external",
+      "description": "Production"
+    },
+    {
+      "url": "https://staging-online.tim.org.tr/api/v1/external",
+      "description": "Test"
+    }
+  ],
+  "paths": {
+    "/company/memberships": {
+      "post": {
+        "summary": "Üyelik Durumu Sorgulama",
+        "operationId": "post-company-memberships",
+        "responses": {
+          "200": {
+            "description": "Başarılı işlem sonucu",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "succes": {
+                      "type": "boolean",
+                      "description": ""
+                    },
+                    "statusCode": {
+                      "type": "number",
+                      "description": "İşlem "
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "description": "Firmanın üyesi olduğu birlik ya da genel sekreterlik listesi",
+                      "items": {
+                        "$ref": "#/components/schemas/MembershipDescription"
+                      }
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                },
+                "examples": {
+                  "Örnek": {
+                    "value": {
+                      "succes": true,
+                      "statusCode": 200,
+                      "data": [
+                        {
+                          "registrationNumber": 1234,
+                          "registrationDate": "2002-07-20T00:00:00",
+                          "associationId": "700d5465-4b24-46a3-a5ce-dde7b43a1f8f",
+                          "associationName": "Makine ve Aksamları İhracatçıları Birliği"
+                        },
+                        {
+                          "registrationNumber": 1234,
+                          "registrationDate": "2002-07-20T00:00:00",
+                          "associationId": "700d5465-4b24-46a3-a5ce-dde7b43a1f8f",
+                          "associationName": "Makine ve Aksamları İhracatçıları Birliği"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "taxNumber parametresinde sağlanan vergi/T.C kimlik numarası ile herhangi bir ihracatçı kaydı olmaması halinde dönen cevaptır",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResult"
+                },
+                "examples": {
+                  "Örnek": {
+                    "value": {
+                      "succes": false,
+                      "statusCode": 404,
+                      "message": "Belirtilen vergi numarası ile bir ihracatçı kayıdı bulunmuyor"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "taxNumber parametresinde geçersiz bir vergi/T.C kimlik numarası sorgulanması halinde geri dönen cevaptır",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResult"
+                },
+                "examples": {
+                  "Örnek": {
+                    "value": {
+                      "succes": false,
+                      "statusCode": 422,
+                      "message": "Geçersiz vergi ya da T.C. Kimlik numarası"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Bir ihracatçı firmanın üyesi olduğu İhracatçı Birliklerinin ya da Genel Sekreterliklerin listesini almak için kullanılan API metodudur. \n\nBu metot fakrlı üyelik bilgilerini sorgulamakta kullanılabilmektedir. Request Body altında yer alan örneklerden sorgu tipleri örneklerini bulabilirsiniz.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "taxNumber": {
+                    "type": "string",
+                    "example": "1234567891",
+                    "minLength": 10,
+                    "maxLength": 11,
+                    "description": "Üyelik bilgisi sorgulanacak firmanın vergi numarası"
+                  },
+                  "gs": {
+                    "type": "boolean",
+                    "description": "İşlem sonucunda firmanın üyesi olduğu birlikler yerine birliklerin bağlı olduğu genel sekreterlik listesini almak için kullanılıkr. Sorguda bu parametre true olacak şekilde gönderildiğinde sonuç listesinde birlikler yerine genel sekreterlikler gösterilecektir"
+                  },
+                  "forDocs": {
+                    "type": "boolean",
+                    "description": "Sorgu sonucunda sadece firmanın belge alabileceği birlik üyeliklerini almak için kullanılır. Bu parametrenin true değerinde gönderilmesi halinde firmanın sadece Üyelik Belgesi, Üye Bilgi Yazısı vb. belgeleri alabileceği birliklerin listesi filitrelmiş oalrak geri dönecektir."
+                  },
+                  "tckn": {
+                    "type": "string",
+                    "description": "Sorguyu yapan kişinin T.C. Kimlik numarası"
+                  }
+                },
+                "required": [
+                  "taxNumber"
+                ]
+              },
+              "examples": {
+                "Tüm Birlik Üyelikleri": {
+                  "value": {
+                    "taxNumber": "1234567891",
+                    "gs": false,
+                    "forDocs": false
+                  }
+                },
+                "Üye Bilgi Yazısı Alınabilecek Birlikler": {
+                  "value": {
+                    "taxNumber": "1234567891",
+                    "gs": false,
+                    "forDocs": true
+                  }
+                },
+                "Performans ve Güvenilirlik Belgesi Alınabilecek Genel Sekreterlikler": {
+                  "value": {
+                    "taxNumber": "1234567891",
+                    "gs": true,
+                    "forDocs": true
+                  }
+                }
+              }
+            }
+          },
+          "description": ""
+        },
+        "parameters": [],
+        "tags": [
+          "Üye İşlemleri"
+        ]
+      }
+    },
+    "/document/validate": {
+      "post": {
+        "summary": "Belge Doğrulama",
+        "operationId": "post-document-validate",
+        "responses": {
+          "200": {
+            "description": "Başarılı işlem sonucu",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "description": "İşlem sonucu veri modeli",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "TİM Online İşlemler belge Id"
+                        },
+                        "code": {
+                          "type": "string",
+                          "description": "Belge no"
+                        },
+                        "createdOn": {
+                          "type": "string",
+                          "description": "ISO 8601 formatında Oluşturulma tarihi",
+                          "example": "2020-11-07T19:30:58.3824963Z",
+                          "format": "date-time"
+                        },
+                        "languageCode": {
+                          "type": "string",
+                          "description": "ISO2 formatında belgenin dili",
+                          "example": "en"
+                        },
+                        "languageName": {
+                          "type": "string",
+                          "description": "Belgenin dili"
+                        },
+                        "documentBody": {
+                          "type": "string",
+                          "description": "Base64 formatında belge"
+                        },
+                        "documentTypeId": {
+                          "type": "number",
+                          "description": "Belge türü kodu"
+                        },
+                        "documentTypeText": {
+                          "type": "string",
+                          "description": "Belge türü"
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Açıklama bilgisi içerir. Ör: Performans ve Güvenilirlik Belgeleri ve Son Üç Yıllık İhracat Raporu türündeli belgelerde bu parametrede belge dönemi yer alır. Üyelik Bilgi Yazısı türündeki belgelerde ise belgenin diili ve hangi birlikten talep edildiği bilgileri yer alır"
+                        },
+                        "companyName": {
+                          "type": "string",
+                          "description": "Belgenin verildiği firma unvanı"
+                        },
+                        "taxNumber": {
+                          "type": "string",
+                          "description": "Belgenin verildiği firma vergi no"
+                        },
+                        "associationId": {
+                          "type": "string",
+                          "description": "Varsa birlik id'si"
+                        },
+                        "associationName": {
+                          "type": "string",
+                          "description": "Varsa belgeyi düzenleyen birlik ya da genel sekreterlik adı. Performans ve Güvenilirlik Belgesinde Genel Sekreterlik adı yer alırken, Üyelik Bilgi formunda belgeyi düzenleyen birlik adı yer alır"
+                        }
+                      }
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "Bkz: ApiResult.success"
+                    },
+                    "statusCode": {
+                      "type": "number",
+                      "description": "Bkz: ApiResult.statusCode"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "success",
+                    "statusCode"
+                  ]
+                },
+                "examples": {
+                  "Örnek ": {
+                    "value": {
+                      "data": {
+                        "id": "d64e83b8-fd20-48f6-b664-16b621ad3399",
+                        "code": "TME01-8F42-E47B-4A33",
+                        "createdOn": "2020-11-07T19:30:58.3824963Z",
+                        "languageCode": "tr",
+                        "languageName": "Türkçe",
+                        "documentBody": "JVBERi0xLjUNCiWDkvr+DQ.......UgL0NhdGFsb2cNCi9QYWdlcyAyI==",
+                        "documentTypeId": 5003,
+                        "documentTypeText": "Performans ve Güvenilirlik Belgesi",
+                        "description": "Dönem: 01.11.2018 - 31.10.2020",
+                        "companyName": "TÜRKİ MAKİNALARI A.Ş.",
+                        "taxNumber": "1234567890",
+                        "associationId": "b56947b8-f54d-4e8c-94a5-c8d2265e3045",
+                        "associationName": "İstanbul Maden ve Metaller İhracatçı Birlikleri Genel Sekreterliği"
+                      },
+                      "success": true,
+                      "statusCode": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Belge bulunamadı. code parametresinde belirtilen belge kodu ile oluşturulmuş geçerli bir belge olmaması halinde geri dönen cevaptır",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResult"
+                },
+                "examples": {
+                  "Örnek": {
+                    "value": {
+                      "succes": false,
+                      "statusCode": 404,
+                      "message": "Geçerli bir belge bulunamadı"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Belge kodu ile belgenin doğruluğunu sorgulamak için kullanılır. ",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "",
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "description": "Sorgulanan belgenin numarası/ kodu"
+                  },
+                  "tckn": {
+                    "type": "string",
+                    "description": "Biliniyor ise sorguyu yapan kişinin T.C. Kimlik Numarası"
+                  },
+                  "includeContent": {
+                    "type": "boolean",
+                    "description": "Sorgu sonucunda belge içeriğini de amak için kullanılır. true değeri gönderilmesi halinde sorgu sonucunda belge içeriği base64 formatında documentBody parametresinde yer alacaktır"
+                  }
+                },
+                "required": [
+                  "code"
+                ]
+              },
+              "examples": {
+                "Örnek": {
+                  "value": {
+                    "code": "TME01-CEA8-F90C-4488",
+                    "tckn": "12345678901"
+                  }
+                }
+              }
+            }
+          },
+          "description": ""
+        },
+        "tags": [
+          "Barkodlu Belge İşlemleri"
+        ]
+      }
+    },
+    "/company/debts": {
+      "post": {
+        "summary": "Üye Borç Sorgulama",
+        "operationId": "post-company-debts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "uniqueItems": false,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "associationName": {
+                            "type": "string",
+                            "description": "Borcun ait olduğu birlik adı"
+                          },
+                          "year": {
+                            "type": "number",
+                            "description": "Borcun ait olduğu yıl"
+                          },
+                          "debt": {
+                            "type": "number",
+                            "description": "Borç tutarı"
+                          },
+                          "dh": {
+                            "type": "number",
+                            "description": "Varsa ilgili borca ait gecikme zammı"
+                          }
+                        }
+                      }
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "İşlem sonucu "
+                    }
+                  },
+                  "required": [
+                    "success"
+                  ]
+                },
+                "examples": {
+                  "Örnek": {
+                    "value": {
+                      "data": [
+                        {
+                          "associationName": "Birlik Adı",
+                          "year": 2010,
+                          "debt": 100,
+                          "dh": 1.78
+                        }
+                      ],
+                      "success": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Belirtilen vergi numarası ile kayılı bir firma olmaması halinde geri döner"
+          },
+          "422": {
+            "description": "Geçersiz vergi ya da T.C. Kimlik numarası"
+          }
+        },
+        "description": "Bir firmanın İhracatçı birliklerine olan borçlarının sorgulanması için kullanılır. ",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TAxNumberRequest"
+              },
+              "examples": {
+                "example-1": {
+                  "value": {
+                    "taxNumber": "string",
+                    "tckn": "string"
+                  }
+                }
+              }
+            }
+          },
+          "description": ""
+        },
+        "tags": [
+          "Üye İşlemleri"
+        ]
+      }
+    },
+    "/company/poa-list": {
+      "post": {
+        "summary": "Vekaletname Sorgulama",
+        "operationId": "post-company-poa-list",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "uniqueItems": false,
+                      "description": "Vekaletname listesi",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "brokerName": {
+                            "type": "string",
+                            "description": "Gümrük müşaviri unvanı"
+                          },
+                          "brokerTaxNumber": {
+                            "type": "string",
+                            "description": "Gümrük müşaviri vergi no"
+                          },
+                          "expireDate": {
+                            "type": "string",
+                            "description": "Vekalet geçerlilik tarihi"
+                          },
+                          "statusText": {
+                            "type": "string",
+                            "description": "Vekalet durumu"
+                          }
+                        }
+                      }
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "İşlem sonucu"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "İhracatçı birlikleri üyesi nir firmanın Gümrük Müşavirlerine verilmiş olan vekaletnamelerini sorulayan metottur",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaxNumberRequest"
+              }
+            }
+          }
+        },
+        "tags": [
+          "Üye İşlemleri"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApiResult": {
+        "title": "ApiResult",
+        "type": "object",
+        "x-examples": {
+          "Örnek Başarılı İşlem Sonucu": {
+            "succes": true,
+            "statusCode": 200,
+            "message": "İşlem başarılı",
+            "data": null
+          },
+          "Örnek Hatalı İşlem Sonucu": {
+            "succes": false,
+            "statusCode": 500,
+            "message": "şlem gerçekleştirilirken bir hata oluştu"
+          }
+        },
+        "description": "Tüm API metotlarından dönen jenerik veri modeli. API metoduna göre data parametresinde yer alan veri modeli değişiklik göstermektedir",
+        "properties": {
+          "succes": {
+            "type": "boolean",
+            "description": "İşlemin başarılı olup olmadığını belirtir. true ise işlem başarılı false işe işlem gerçekleştirilirken bir hata oluştuğunu belirtir"
+          },
+          "statusCode": {
+            "type": "integer",
+            "description": "İşlem durumu kodu"
+          },
+          "message": {
+            "type": "string",
+            "description": "İşlem sonucu mesajı. Var ise hata mesajları da burada verilmektedir"
+          },
+          "data": {
+            "description": "İşlem sonucunda geri dönecek bir nesne var ise data parametresinde yer alacaktır"
+          }
+        },
+        "required": [
+          "succes",
+          "statusCode"
+        ]
+      },
+      "MembershipDescription": {
+        "description": "Fİrmanın birlik üyeliği hankkındaki bilgileri içeren veri modelidir",
+        "type": "object",
+        "title": "Üyelik Bilgisi",
+        "properties": {
+          "registrationNumber": {
+            "type": "number",
+            "description": "Üye sicil numarası"
+          },
+          "registrationDate": {
+            "type": "string",
+            "description": "Üyelik başlangıç tarihi"
+          },
+          "associationId": {
+            "type": "string",
+            "description": "Birlik ya da Genel Sekreterliğn Online İşlemler Id'si"
+          },
+          "associationName": {
+            "type": "string",
+            "description": "Birlik ya da Genel Sekreterlik adı"
+          }
+        },
+        "required": [
+          "registrationNumber",
+          "registrationDate",
+          "associationId",
+          "associationName"
+        ]
+      },
+      "TaxNumberRequest": {
+        "description": "",
+        "type": "object",
+        "x-examples": {
+          "Örnek": {
+            "taxNumber": "1234567890",
+            "tckn": "12345678901"
+          }
+        },
+        "title": "Firma Vergi Numarası Sorgu Modeli",
+        "properties": {
+          "taxNumber": {
+            "type": "string",
+            "description": "Sorgulanacak firmaya ait vergi ya da T.C. Kimlik numarası",
+            "minLength": 10,
+            "maxLength": 11,
+            "example": "1234567891"
+          },
+          "tckn": {
+            "type": "string",
+            "description": "Sorguyu yapan kullanıcının T.C. Kimlik numarası"
+          }
+        },
+        "required": [
+          "taxNumber"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "X-Api-Key": {
+        "type": "apiKey",
+        "in": "header",
+        "description": "Tüm taleplerde X-Api-Key header içerisinde size sağlanan API key kullanılmalıdır",
+        "name": "Api Key"
+      }
+    }
+  },
+  "security": [
+    {
+      "X-Api-Key": []
+    }
+  ]
+}
