@@ -543,17 +543,16 @@
         ]
       }
     },
+    "/document": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [],
+        "responses": {},
+        "operationId": "get-document"
+      }
+    },
     "/document/create/membership-info": {
       "post": {
-        "summary": "",
-        "operationId": "post-document-create-membership-info",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "get": {
         "summary": "Üye Bilgi Yazısı Oluşturma",
         "requestBody": {
           "content": {
@@ -603,12 +602,66 @@
                   "associationId",
                   "lang"
                 ]
+              },
+              "examples": {
+                "example-1": {
+                  "value": {
+                    "requestedBy": "stringstrin",
+                    "taxNumber": "string",
+                    "associationId": "string",
+                    "lang": "tr"
+                  }
+                }
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "type": "object",
+                "properties": {}
               }
             }
           },
           "description": ""
         },
-        "description": "Belirli bir ihracatçı birliğinden belirli bir dilde **Üye Bilgi Yazısı** almak için kullanılır.\n\nBelgenin alınacağı birliğe ait **`id`** değeri **`associationId`** parametresinde gönderilir.  Parametre olarak gönderilen id değeri firmanın üyesi olduğu ve belge alabileceği bir biliğin id'si olmalıdır. \n\nFirmanın üyesi olduğu ve belge alma hakkı olan birliklerin listesi  **Üyelik Sorgulama**  **`/company/memberships`** metodundan alınarak bu listede yer alan bir birliğin **`id`** değeri bu metoda gönderilmelidir\n\n**Desteklenen Diller**\nBu metodun lang parametresinde gönderilebilecek diller aşağıdaki gibidir\n\n| DİL KODU       |ADI                            \n|----------------|-------------------------------\n|tr              |Türkçe            \n|ar              |Arapça            \n|de              |Almanca\n|en              |İngilizce\n|es              |İspanyolca\n|fr              |Fransızca\n|it              |İtayanca\n|ja              |Japonca\n|ru              |Rusça\n|zh              |Çince\n\n\n"
+        "description": "Belirli bir ihracatçı birliğinden belirli bir dilde **Üye Bilgi Yazısı** almak için kullanılır.\n\nBelgenin alınacağı birliğe ait **`id`** değeri **`associationId`** parametresinde gönderilir.  Parametre olarak gönderilen id değeri firmanın üyesi olduğu ve belge alabileceği bir biliğin id'si olmalıdır. \n\nFirmanın üyesi olduğu ve belge alma hakkı olan birliklerin listesi  **Üyelik Sorgulama**  **`/company/memberships`** metodundan alınarak bu listede yer alan bir birliğin **`id`** değeri bu metoda gönderilmelidir\n\n**Desteklenen Diller**\nBu metodun lang parametresinde gönderilebilecek diller aşağıdaki gibidir\n\n| DİL KODU       |ADI                            \n|----------------|-------------------------------\n|tr              |Türkçe            \n|ar              |Arapça            \n|de              |Almanca\n|en              |İngilizce\n|es              |İspanyolca\n|fr              |Fransızca\n|it              |İtayanca\n|ja              |Japonca\n|ru              |Rusça\n|zh              |Çince\n\n\n",
+        "operationId": "post-document-create-membership-info",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateDocumentResponseModel"
+                },
+                "examples": {
+                  "Örnek Sonuç": {
+                    "value": {
+                      "data": {
+                        "id": "string",
+                        "code": "string",
+                        "companyName": "string",
+                        "taxNumber": "string",
+                        "documentBody": "string",
+                        "description": "string",
+                        "documentTypeId": 0,
+                        "documentTypeText": "string",
+                        "requestedBy": "string",
+                        "statusId": 0,
+                        "statusText": "string"
+                      },
+                      "success": true,
+                      "type": "string",
+                      "statusCode": 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Barkodlu Belge İşlemleri"
+        ]
       }
     }
   },
@@ -708,6 +761,77 @@
         "required": [
           "taxNumber"
         ]
+      },
+      "CreateDocumentResponseModel": {
+        "title": "Barkodlu Belge Oluşturma Sonucu",
+        "type": "object",
+        "description": "Belge oluşturma sonucundan geri dönen veri modelidir. Eğer senkron işlem yapılıyor ise belge documentBody parametresi içerisinde base64 olarak yer alır. ",
+        "properties": {
+          "data": {
+            "type": "object",
+            "description": "Oluşturulan belge detayı",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Belge Id"
+              },
+              "code": {
+                "type": "string",
+                "description": "Belge kodu (barkod)"
+              },
+              "companyName": {
+                "type": "string",
+                "description": "Belgenin düzenlendiği firma unvanı"
+              },
+              "taxNumber": {
+                "type": "string",
+                "description": "Belgenin düzenlendiği firmanın vergi kimlik numarası"
+              },
+              "documentBody": {
+                "type": "string",
+                "description": "Belge içeriği"
+              },
+              "description": {
+                "type": "string",
+                "description": "Varsa belge ile ilgili açıklama - ek bilgi"
+              },
+              "documentTypeId": {
+                "type": "number",
+                "description": "Belge türü kodu"
+              },
+              "documentTypeText": {
+                "type": "string",
+                "description": "Belge türü"
+              },
+              "statusId": {
+                "type": "number",
+                "description": "Belge oluşturulma durum kodu"
+              },
+              "statusText": {
+                "type": "string",
+                "description": "Belge oluşturulma durumu"
+              }
+            },
+            "required": [
+              "id",
+              "code",
+              "companyName",
+              "taxNumber",
+              "documentTypeId",
+              "documentTypeText",
+              "statusId",
+              "statusText"
+            ]
+          },
+          "success": {
+            "type": "boolean",
+            "description": "İşlem başarılı mı?"
+          },
+          "statusCode": {
+            "type": "number",
+            "description": "İşlem durum kodu"
+          }
+        }
       }
     },
     "securitySchemes": {
