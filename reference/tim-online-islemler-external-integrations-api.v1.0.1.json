@@ -37,7 +37,7 @@
   "paths": {
     "/company/memberships": {
       "post": {
-        "summary": "Üyelik Durumu Sorgulama",
+        "summary": "Üyelik Sorgulama",
         "operationId": "post-company-memberships",
         "responses": {
           "200": {
@@ -541,6 +541,74 @@
         "tags": [
           "Üye İşlemleri"
         ]
+      }
+    },
+    "/document/create/membership-info": {
+      "post": {
+        "summary": "",
+        "operationId": "post-document-create-membership-info",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "get": {
+        "summary": "Üye Bilgi Yazısı Oluşturma",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "",
+                "type": "object",
+                "properties": {
+                  "requestedBy": {
+                    "type": "string",
+                    "minLength": 11,
+                    "description": "İşlemi yapan kullanıcının T.C. Kimlik numarası"
+                  },
+                  "taxNumber": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Belgesi oluşturulacak firmanın vergi kimlik numarası"
+                  },
+                  "associationId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Belgenin talep edildiği Birliğe ait Online işlemler id'si. Bkz: Üyelik Sorgulama"
+                  },
+                  "lang": {
+                    "type": "string",
+                    "minLength": 2,
+                    "description": "ISO2 formatında belgenin alınacağı dil",
+                    "enum": [
+                      "ar",
+                      "de",
+                      "en",
+                      "es",
+                      "fr",
+                      "it",
+                      "ja",
+                      "ru",
+                      "tr",
+                      "zh"
+                    ],
+                    "example": "tr",
+                    "maxLength": 2
+                  }
+                },
+                "required": [
+                  "requestedBy",
+                  "taxNumber",
+                  "associationId",
+                  "lang"
+                ]
+              }
+            }
+          },
+          "description": ""
+        },
+        "description": "Belirli bir ihracatçı birliğinden belirli bir dilde **Üye Bilgi Yazısı** almak için kullanılır.\n\nBelgenin alınacağı birliğe ait **`id`** değeri **`associationId`** parametresinde gönderilir.  Parametre olarak gönderilen id değeri firmanın üyesi olduğu ve belge alabileceği bir biliğin id'si olmalıdır. \n\nFirmanın üyesi olduğu ve belge alma hakkı olan birliklerin listesi  **Üyelik Sorgulama**  **`/company/memberships`** metodundan alınarak bu listede yer alan bir birliğin **`id`** değeri bu metoda gönderilmelidir\n\n**Desteklenen Diller**\nBu metodun lang parametresinde gönderilebilecek diller aşağıdaki gibidir\n\n| DİL KODU       |ADI                            \n|----------------|-------------------------------\n|tr              |Türkçe            \n|ar              |Arapça            \n|de              |Almanca\n|en              |İngilizce\n|es              |İspanyolca\n|fr              |Fransızca\n|it              |İtayanca\n|ja              |Japonca\n|ru              |Rusça\n|zh              |Çince\n\n\n"
       }
     }
   },
