@@ -97,6 +97,12 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
           "404": {
             "description": "taxNumber parametresinde sağlanan vergi/T.C kimlik numarası ile herhangi bir ihracatçı kaydı olmaması halinde dönen cevaptır",
             "content": {
@@ -172,21 +178,24 @@
                   "value": {
                     "taxNumber": "1234567891",
                     "gs": false,
-                    "forDocs": false
+                    "forDocs": false,
+                    "requestedBy": "12345678901"
                   }
                 },
                 "Üye Bilgi Yazısı Alınabilecek Birlikler": {
                   "value": {
                     "taxNumber": "1234567891",
                     "gs": false,
-                    "forDocs": true
+                    "forDocs": true,
+                    "requestedBy": "12345678901"
                   }
                 },
                 "Performans ve Güvenilirlik Belgesi Alınabilecek Genel Sekreterlikler": {
                   "value": {
                     "taxNumber": "1234567891",
                     "gs": true,
-                    "forDocs": true
+                    "forDocs": true,
+                    "requestedBy": "12345678901"
                   }
                 }
               }
@@ -214,65 +223,7 @@
                   "type": "object",
                   "properties": {
                     "data": {
-                      "type": "object",
-                      "description": "İşlem sonucu veri modeli",
-                      "properties": {
-                        "id": {
-                          "type": "string",
-                          "description": "TİM Online İşlemler belge Id"
-                        },
-                        "code": {
-                          "type": "string",
-                          "description": "Belge no"
-                        },
-                        "createdOn": {
-                          "type": "string",
-                          "description": "ISO 8601 formatında Oluşturulma tarihi",
-                          "example": "2020-11-07T19:30:58.3824963Z",
-                          "format": "date-time"
-                        },
-                        "languageCode": {
-                          "type": "string",
-                          "description": "ISO2 formatında belgenin dili",
-                          "example": "en"
-                        },
-                        "languageName": {
-                          "type": "string",
-                          "description": "Belgenin dili"
-                        },
-                        "documentBody": {
-                          "type": "string",
-                          "description": "Base64 formatında belge"
-                        },
-                        "documentTypeId": {
-                          "type": "number",
-                          "description": "Belge türü kodu"
-                        },
-                        "documentTypeText": {
-                          "type": "string",
-                          "description": "Belge türü"
-                        },
-                        "description": {
-                          "type": "string",
-                          "description": "Açıklama bilgisi içerir. Ör: Performans ve Güvenilirlik Belgeleri ve Son Üç Yıllık İhracat Raporu türündeli belgelerde bu parametrede belge dönemi yer alır. Üyelik Bilgi Yazısı türündeki belgelerde ise belgenin diili ve hangi birlikten talep edildiği bilgileri yer alır"
-                        },
-                        "companyName": {
-                          "type": "string",
-                          "description": "Belgenin verildiği firma unvanı"
-                        },
-                        "taxNumber": {
-                          "type": "string",
-                          "description": "Belgenin verildiği firma vergi no"
-                        },
-                        "associationId": {
-                          "type": "string",
-                          "description": "Varsa birlik id'si"
-                        },
-                        "associationName": {
-                          "type": "string",
-                          "description": "Varsa belgeyi düzenleyen birlik ya da genel sekreterlik adı. Performans ve Güvenilirlik Belgesinde Genel Sekreterlik adı yer alırken, Üyelik Bilgi formunda belgeyi düzenleyen birlik adı yer alır"
-                        }
-                      }
+                      "$ref": "#/components/schemas/DocumentModel"
                     },
                     "success": {
                       "type": "boolean",
@@ -293,19 +244,21 @@
                   "Örnek ": {
                     "value": {
                       "data": {
-                        "id": "d64e83b8-fd20-48f6-b664-16b621ad3399",
-                        "code": "TME01-8F42-E47B-4A33",
-                        "createdOn": "2020-11-07T19:30:58.3824963Z",
-                        "languageCode": "tr",
-                        "languageName": "Türkçe",
-                        "documentBody": "JVBERi0xLjUNCiWDkvr+DQ.......UgL0NhdGFsb2cNCi9QYWdlcyAyI==",
+                        "id": "26902129-9267-4f4d-8b42-13a5e2599ed3",
+                        "code": "TME01-1F03-43E4-4607",
+                        "companyName": "AAA MAKİNA SAN. TİC. A. Ş. ",
+                        "taxNumber": "1234567890",
+                        "description": "Dönem: 01.11.2018 - 31.10.2020",
                         "documentTypeId": 5003,
                         "documentTypeText": "Performans ve Güvenilirlik Belgesi",
-                        "description": "Dönem: 01.11.2018 - 31.10.2020",
-                        "companyName": "TÜRKİ MAKİNALARI A.Ş.",
-                        "taxNumber": "1234567890",
+                        "documentBody": "JVBERi0xLjUNCiWDkvr+DQ.......UgL0NhdGFsb2cNCi9QYWdlcyAyI==",
+                        "statusId": 5110,
+                        "statusText": "Oluşturulmuş",
                         "associationId": "b56947b8-f54d-4e8c-94a5-c8d2265e3045",
-                        "associationName": "İstanbul Maden ve Metaller İhracatçı Birlikleri Genel Sekreterliği"
+                        "associationName": "İstanbul Maden ve Metaller İhracatçı Birlikleri Genel Sekreterliği",
+                        "languageCode": "tr",
+                        "languageName": "Türkçe",
+                        "createdOn": "2020-11-09T05:58:27.8160316Z"
                       },
                       "success": true,
                       "statusCode": 0
@@ -314,6 +267,12 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "404": {
             "description": "Belge bulunamadı. code parametresinde belirtilen belge kodu ile oluşturulmuş geçerli bir belge olmaması halinde geri dönen cevaptır",
@@ -348,7 +307,7 @@
                     "type": "string",
                     "description": "Sorgulanan belgenin numarası/ kodu"
                   },
-                  "tckn": {
+                  "requestedBy": {
                     "type": "string",
                     "description": "Biliniyor ise sorguyu yapan kişinin T.C. Kimlik Numarası"
                   },
@@ -364,8 +323,15 @@
               "examples": {
                 "Örnek": {
                   "value": {
-                    "code": "TME01-CEA8-F90C-4488",
-                    "tckn": "12345678901"
+                    "code": "TME01-CEA8-F90C-4483",
+                    "requestedBy": "12345678901"
+                  }
+                },
+                "Örnek - Belge İçeriğini Alma": {
+                  "value": {
+                    "code": "TME01-CEA8-F90C-4484",
+                    "requestedBy": "12345678901",
+                    "includeContent": true
                   }
                 }
               }
@@ -464,10 +430,10 @@
                 "$ref": "#/components/schemas/TaxNumberRequest"
               },
               "examples": {
-                "example-1": {
+                "Örnek": {
                   "value": {
-                    "taxNumber": "string",
-                    "tckn": "string"
+                    "taxNumber": "1234567890",
+                    "requestedBy": "1234567891"
                   }
                 }
               }
@@ -510,7 +476,8 @@
                           },
                           "expireDate": {
                             "type": "string",
-                            "description": "Vekalet geçerlilik tarihi"
+                            "description": "Vekalet geçerlilik tarihi",
+                            "format": "date"
                           },
                           "statusText": {
                             "type": "string",
@@ -524,9 +491,55 @@
                       "description": "İşlem sonucu"
                     }
                   }
+                },
+                "examples": {
+                  "Örnek": {
+                    "value": {
+                      "data": [
+                        {
+                          "brokerName": "ABC GUMRUK MUSAVIRLIGI A.S. ",
+                          "brokerTaxNumber": "1234567890",
+                          "expireDate": "2009-01-12T00:00:00",
+                          "statusText": "Süresi Dolmuş"
+                        },
+                        {
+                          "brokerName": "ABC GUMRUK MUSAVIRLIGI A.S. ",
+                          "brokerTaxNumber": "1234567890",
+                          "expireDate": "2014-12-26T00:00:00",
+                          "statusText": "Süresi Dolmuş"
+                        },
+                        {
+                          "brokerName": "ABC GÜMRÜK MÜŞAVİRLİĞİ VE LOJİSTİK HİZM.  LTD. ŞTİ.",
+                          "brokerTaxNumber": "1234567891",
+                          "expireDate": "2019-01-31T00:00:00",
+                          "statusText": "Süresi Dolmuş"
+                        },
+                        {
+                          "brokerName": "ABC GÜMRÜK MÜŞAVİRLİĞİ VE LOJİSTİK HİZM.  LTD. ŞTİ.",
+                          "brokerTaxNumber": "1234567891",
+                          "expireDate": "2022-01-31T00:00:00",
+                          "statusText": "Geçerli"
+                        },
+                        {
+                          "brokerName": "ABC GUMRUK MUSAVIRLIGI A.S. ",
+                          "brokerTaxNumber": "1234567890",
+                          "expireDate": "2099-12-31T00:00:00",
+                          "statusText": "Geçerli"
+                        }
+                      ],
+                      "success": true,
+                      "statusCode": 200
+                    }
+                  }
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         },
         "description": "İhracatçı birlikleri üyesi nir firmanın Gümrük Müşavirlerine verilmiş olan vekaletnamelerini sorulayan metottur",
@@ -535,6 +548,14 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/TaxNumberRequest"
+              },
+              "examples": {
+                "Örnek": {
+                  "value": {
+                    "taxNumber": "1234567891",
+                    "requestedBy": "12345678901"
+                  }
+                }
               }
             }
           }
@@ -560,6 +581,14 @@
                   "properties": {
                     "data": {
                       "type": "object",
+                      "required": [
+                        "associationName",
+                        "expireDate",
+                        "language",
+                        "registrationNumber",
+                        "companyName",
+                        "taxNumber"
+                      ],
                       "properties": {
                         "associationName": {
                           "type": "string",
@@ -574,7 +603,7 @@
                           "minLength": 1
                         },
                         "registrationNumber": {
-                          "type": "number"
+                          "type": "integer"
                         },
                         "companyName": {
                           "type": "string",
@@ -584,22 +613,10 @@
                           "type": "string",
                           "minLength": 1
                         }
-                      },
-                      "required": [
-                        "associationName",
-                        "expireDate",
-                        "language",
-                        "registrationNumber",
-                        "companyName",
-                        "taxNumber"
-                      ]
+                      }
                     },
                     "success": {
                       "type": "boolean"
-                    },
-                    "type": {
-                      "type": "string",
-                      "minLength": 1
                     },
                     "statusCode": {
                       "type": "number"
@@ -608,7 +625,6 @@
                   "required": [
                     "data",
                     "success",
-                    "type",
                     "statusCode"
                   ]
                 },
@@ -630,6 +646,12 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         },
         "requestBody": {
@@ -637,6 +659,16 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CreateMembershipInfoDocumentRequestModel"
+              },
+              "examples": {
+                "Örnek": {
+                  "value": {
+                    "taxNumber": "1234567890",
+                    "associationId": "700d5465-4b24-46a3-a5ce-dde7b43a1f8f",
+                    "lang": "tr",
+                    "requestedBy": "12345678901"
+                  }
+                }
               }
             }
           }
@@ -657,7 +689,7 @@
                 "$ref": "#/components/schemas/CreateMembershipInfoDocumentRequestModel"
               },
               "examples": {
-                "example-1": {
+                "Örnek": {
                   "value": {
                     "requestedBy": "stringstrin",
                     "taxNumber": "string",
@@ -684,32 +716,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateDocumentResponseModel"
+                  "$ref": "#/components/schemas/DocumentModel"
                 },
-                "examples": {
-                  "Örnek Sonuç": {
-                    "value": {
-                      "data": {
-                        "id": "string",
-                        "code": "string",
-                        "companyName": "string",
-                        "taxNumber": "string",
-                        "documentBody": "string",
-                        "description": "string",
-                        "documentTypeId": 0,
-                        "documentTypeText": "string",
-                        "requestedBy": "string",
-                        "statusId": 0,
-                        "statusText": "string"
-                      },
-                      "success": true,
-                      "type": "string",
-                      "statusCode": 0
-                    }
-                  }
-                }
+                "examples": {}
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         },
         "tags": [
@@ -735,61 +752,7 @@
                       "uniqueItems": true,
                       "minItems": 1,
                       "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "string",
-                            "description": "Belge id"
-                          },
-                          "code": {
-                            "type": "string",
-                            "description": "Belge kodu"
-                          },
-                          "companyName": {
-                            "type": "string",
-                            "description": "Belgenin verildiği firma unvanı"
-                          },
-                          "taxNumber": {
-                            "type": "string",
-                            "description": "Belgenin verildiği firma vergi kimlik no"
-                          },
-                          "description": {
-                            "type": "string",
-                            "description": "Belge ile ilgili ek açıklama içerir. Belgenin hangi birlikten hangi dilde talep edildiği bilgisi yer alır."
-                          },
-                          "languageCode": {
-                            "type": "string",
-                            "description": "ISO2 Formatında belge dili"
-                          },
-                          "languageName": {
-                            "type": "string",
-                            "description": "BElge dili"
-                          },
-                          "documentTypeId": {
-                            "type": "number",
-                            "description": "Belge tipi idsi"
-                          },
-                          "documentTypeText": {
-                            "type": "string",
-                            "description": "Belge tipi"
-                          },
-                          "createdOn": {
-                            "type": "string",
-                            "description": "ISO 8601 formatında belge oluşturulma tarihi"
-                          }
-                        },
-                        "required": [
-                          "id",
-                          "code",
-                          "companyName",
-                          "taxNumber",
-                          "description",
-                          "languageCode",
-                          "languageName",
-                          "documentTypeId",
-                          "documentTypeText",
-                          "createdOn"
-                        ]
+                        "$ref": "#/components/schemas/DocumentModel"
                       }
                     },
                     "success": {
@@ -815,24 +778,32 @@
                           "code": "TME01-D5EB-9FF7-4B82",
                           "companyName": "AAA MAKİNA SAN. TİC. A. Ş. ",
                           "taxNumber": "1234567890",
-                          "description": "[ EN ] - Makine ve Aksamları İhracatçıları Birliği ",
-                          "languageCode": "tr",
-                          "languageName": "Türkçe",
+                          "description": "[EN] - Makine ve Aksamları İhracatçıları Birliği ",
+                          "languageCode": "en",
+                          "languageName": "English",
                           "documentTypeId": 5002,
                           "documentTypeText": "Üyelik Bilgi Yazısı",
-                          "createdOn": "2020-11-07T13:27:17.1353638Z"
+                          "createdOn": "2020-11-07T13:27:17.1353638Z",
+                          "expireDate": "2021-11-07T13:27:17.1353638Z",
+                          "associationId": "b56947b8-f54d-4e8c-94a5-c8d2265e3045",
+                          "associationName": "Makine ve Aksamları İhracatçıları Birliği",
+                          "registrationNumber": 1234
                         },
                         {
                           "id": "69070b9f-a6fa-4895-b0a3-15bbffe63ae2",
                           "code": "TME01-9FEF-7266-4C1C",
                           "companyName": "AAA MAKİNA SAN. TİC. A. Ş. ",
                           "taxNumber": "1234567890",
-                          "description": "[ TR ] - Makine ve Aksamları İhracatçıları Birliği ",
+                          "description": "[TR] - Makine ve Aksamları İhracatçıları Birliği ",
                           "languageCode": "tr",
                           "languageName": "Türkçe",
                           "documentTypeId": 5002,
                           "documentTypeText": "Üyelik Bilgi Yazısı",
-                          "createdOn": "2020-11-07T13:24:10.3972334Z"
+                          "createdOn": "2020-11-07T13:24:10.3972334Z",
+                          "expireDate": "2021-11-07T13:24:10.3972334Z",
+                          "associationId": "b56947b8-f54d-4e8c-94a5-c8d2265e3045",
+                          "associationName": "Makine ve Aksamları İhracatçıları Birliği",
+                          "registrationNumber": 1234
                         }
                       ],
                       "success": true,
@@ -842,6 +813,12 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         },
         "description": "Kullanıcı tarafından bir firma adına oluşturulan **Üye Bilgi Yazısı** listesini almak için kullanılır",
@@ -850,6 +827,14 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/TaxNumberRequest"
+              },
+              "examples": {
+                "Örnek": {
+                  "value": {
+                    "taxNumber": "1234567891",
+                    "requestedBy": "12345678901"
+                  }
+                }
               }
             }
           }
@@ -897,27 +882,31 @@
                 "examples": {
                   "Örnek": {
                     "value": {
-                      "data": {
-                        "id": "26902129-9267-4f4d-8b42-13a5e2599ed6",
-                        "code": "TME01-1F03-43E4-4609",
-                        "companyName": "AAA MAKİNA SAN. TİC. A. Ş. ",
-                        "taxNumber": "1234567890",
-                        "documentBody": null,
-                        "description": null,
-                        "documentTypeId": 5003,
-                        "documentTypeText": "Performans ve Güvenilirlik Belgesi",
-                        "requestedBy": "12345678901",
-                        "statusId": 5101,
-                        "statusText": "Hazırlanıyor"
-                      },
-                      "success": true,
-                      "type": "success",
-                      "statusCode": 200
+                      "id": "26902129-9267-4f4d-8b42-13a5e2599ed6",
+                      "code": "TME01-1F03-43E4-4609",
+                      "companyName": "AAA MAKİNA SAN. TİC. A. Ş. ",
+                      "taxNumber": "1234567890",
+                      "documentBody": null,
+                      "description": null,
+                      "documentTypeId": 5003,
+                      "documentTypeText": "Performans ve Güvenilirlik Belgesi",
+                      "associationId": "b56947b8-f54d-4e8c-94a5-c8d2265e3045",
+                      "associationName": "İstanbul Maden ve Metaller İhracatçı Birlikleri Genel Sekreterliği",
+                      "requestedBy": "12345678901",
+                      "statusId": 5101,
+                      "statusText": "Hazırlanıyor",
+                      "createdOn": "2020-11-09T05:58:27.8160316Z"
                     }
                   }
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         },
         "requestBody": {
@@ -1236,6 +1225,12 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
         },
         "operationId": "get-document-par-periods",
@@ -1291,7 +1286,7 @@
         "title": "Üyelik Bilgisi",
         "properties": {
           "registrationNumber": {
-            "type": "number",
+            "type": "integer",
             "description": "Üye sicil numarası"
           },
           "registrationDate": {
@@ -1415,6 +1410,7 @@
       "CreateMembershipInfoDocumentRequestModel": {
         "title": "Barkodlu Belge Oluşturma Talebi",
         "type": "object",
+        "description": "Barkodlu bir belge oluşturulurken gönderilen parametreleri içerir. Her belge için fakrlı parametre",
         "properties": {
           "requestedBy": {
             "type": "string",
@@ -1429,7 +1425,7 @@
           "associationId": {
             "type": "string",
             "minLength": 1,
-            "description": "Belgenin talep edildiği Birliğe ait Online işlemler id'si. Bkz: Üyelik Sorgulama"
+            "description": "Belgenin talep edildiği Birliğe ait Guid tipinde Online işlemler id'si. Bkz: Üyelik Sorgulama"
           },
           "lang": {
             "type": "string",
@@ -1450,8 +1446,7 @@
             "example": "tr",
             "maxLength": 2
           }
-        },
-        "description": "Barkodlu bir belge oluşturulurken gönderilen parametreleri içerir. Her belge için fakrlı parametre"
+        }
       },
       "DocumentModel": {
         "description": "",
@@ -1466,9 +1461,12 @@
             "description": null,
             "documentTypeId": 5003,
             "documentTypeText": "Performans ve Güvenilirlik Belgesi",
+            "associationId": "b56947b8-f54d-4e8c-94a5-c8d2265e3045",
+            "associationName": "İstanbul Maden ve Metaller İhracatçı Birlikleri Genel Sekreterliği",
             "requestedBy": "12345678901",
             "statusId": 5101,
-            "statusText": "Hazırlanıyor"
+            "statusText": "Hazırlanıyor",
+            "createdOn": "2020-11-09T05:58:27.8160316Z"
           },
           "Oluşturulmuş Belge": {
             "id": "26902129-9267-4f4d-8b42-13a5e2599ed6",
@@ -1482,6 +1480,22 @@
             "requestedBy": "12345678901",
             "statusId": 5101,
             "statusText": "Hazırlanıyor"
+          },
+          "Performans ve Güvenilirlik Belgesi": {
+            "id": "26902129-9267-4f4d-8b42-13a5e2599ed6",
+            "code": "TME01-1F03-43E4-4607",
+            "companyName": "AAA MAKİNA SAN. TİC. A. Ş. ",
+            "taxNumber": "1234567890",
+            "description": "Dönem: 01.11.2018 - 31.10.2020",
+            "documentTypeId": 5003,
+            "documentTypeText": "Performans ve Güvenilirlik Belgesi",
+            "statusId": 5110,
+            "statusText": "Oluşturulmuş",
+            "associationId": "b56947b8-f54d-4e8c-94a5-c8d2265e3045",
+            "associationName": "İstanbul Maden ve Metaller İhracatçı Birlikleri Genel Sekreterliği",
+            "languageCode": "tr",
+            "languageName": "Türkçe",
+            "createdOn": "2020-11-09T05:58:27.8160316Z"
           }
         },
         "title": "Barkodlu Belge Modeli",
@@ -1509,7 +1523,7 @@
             "description": "Belge ile ilgili ek açıklama içerir\n\n- Performans & Güvenilirlik Belgesi için bu alanda belgenin dönemi yer alır\n- Üye Bilgi Yazısı Belgesi için bu alanda belge dili ve belgenin alındığı İhracatçı Birliği adı yer alır."
           },
           "documentTypeId": {
-            "type": "number",
+            "type": "integer",
             "description": "Belge tipi kodu"
           },
           "documentTypeText": {
@@ -1520,12 +1534,67 @@
             "type": "string"
           },
           "statusId": {
-            "type": "number",
+            "type": "integer",
             "description": "Belge durum kodu"
           },
           "statusText": {
             "type": "string",
             "description": "Belge oluşturma durumu"
+          },
+          "memberOf": {
+            "type": "array",
+            "description": "Üyelik Belgesi ise firmanın belge oluşturulurken üyesi olduğu birliklerin listesini içerir",
+            "items": {
+              "type": "object",
+              "properties": {
+                "registrationNumber": {
+                  "type": "integer",
+                  "description": "Sicil numarası"
+                },
+                "registrationDate": {
+                  "type": "string",
+                  "description": "Üyelik başlangıç tarihi"
+                },
+                "associationId": {
+                  "type": "string",
+                  "description": "Guid veri tipinde Birliğin Online İşlemler Id'si"
+                },
+                "associationName": {
+                  "type": "string",
+                  "description": "Birlik adı"
+                }
+              }
+            }
+          },
+          "expireDate": {
+            "type": "string",
+            "description": "Üye Bilgi yazısı türündeki belgelerde ISO8601 formatında belgenin geçerlik tarihini içerir",
+            "format": "date"
+          },
+          "registrationNumber": {
+            "type": "integer",
+            "description": "Belge üye bilgi yazısı ise firmanın belgenin talep edildiği birlikteki sicil numarası"
+          },
+          "associationId": {
+            "type": "string",
+            "description": "Eğer belge tipi **Üye Bilgi Yazısı** ise belgenin talep edildiği birliğin Online İşlemler Id'sini, belge **Performans ve Güvenilirlik Belgesi** ise belgenin talep ediliği Genel Sekreterliğin Guid veri tipinde Online İşlemler Id'sini içerir. "
+          },
+          "associationName": {
+            "type": "string",
+            "description": "Eğer belge tipi **Üye Bilgi Yazısı** ise belgenin talep edildiği birliğin adını, belge **Performans ve Güvenilirlik Belgesi** ise belgenin talep ediliği Genel Sekreterlik adını içerir. "
+          },
+          "languageCode": {
+            "type": "string",
+            "description": "Belgenin oluşturulduğu dilin ISO2 kodu"
+          },
+          "languageName": {
+            "type": "string",
+            "description": "Belgenin oluşturulduğu dilin adı"
+          },
+          "createdOn": {
+            "type": "string",
+            "description": "IS08601 formatında belge oluşturulma tarihi",
+            "format": "date-time"
           }
         },
         "required": [
@@ -1537,7 +1606,8 @@
           "documentTypeText",
           "requestedBy",
           "statusId",
-          "statusText"
+          "statusText",
+          "createdOn"
         ]
       }
     },
