@@ -5,7 +5,8 @@
       "name": "Genel Bakış"
     },
     {
-      "name": "Barkodlu Belge İşlemleri"
+      "name": "Barkodlu Belge İşlemleri",
+      "description":"Barkodlu belge oluşturmak için gerekli metotlar"
     },
     {
       "name": "Üye İşlemleri"
