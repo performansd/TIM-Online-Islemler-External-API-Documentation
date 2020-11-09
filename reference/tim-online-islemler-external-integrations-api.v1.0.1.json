@@ -1153,7 +1153,9 @@
     "/document/performance-reliability/periods": {
       "get": {
         "summary": "Performans ve Güvenilirlik Belgesi Oluşturma Periyot Listesi",
-        "tags": [],
+        "tags": [
+          "Barkodlu Belge İşlemleri"
+        ],
         "responses": {
           "200": {
             "description": "OK",
