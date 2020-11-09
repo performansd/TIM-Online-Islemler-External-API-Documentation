@@ -2,20 +2,18 @@
   "openapi": "3.0.0",
   "tags": [
     {
-      "name": "Genel Bakış"
-    },
-    {
       "name": "Barkodlu Belge İşlemleri",
       "description": "Barkodlu belge oluşturmak için gerekli metotlar"
     },
     {
-      "name": "Üye İşlemleri"
+      "name": "Üye İşlemleri",
+      "description": "Üyeler ile ilgili sorgular"
     }
   ],
   "info": {
     "title": "TİM Online İşlemler - Entegrasyon API",
     "version": "1.0",
-    "description": "TİM Online İşlemler üzerinden sağlanan hizmetlerden diğer kurumların yazılım altyapıları ile entegrasyon sağlamak için kullanılan API metotları ve bu metotların nasıl kullanıldığına dair bilgileri içermektedir.\n\nTest Sorgu Adresi\nhttps://staging-online.tim.org.tr/api/v1/external \n\nCanlı Sorgu Adresi\nhttps://online.tim.org.tr/api/v1/external/document/validate",
+    "description": "**TİM Online İşlemler** üzerinden sağlanan hizmetlerden diğer kurumların yazılım altyapıları ile entegrasyon sağlamak için kullanılan API metotları ve bu metotların nasıl kullanıldığına dair bilgileri içermektedir.\n\nBu servisleri kulalnabilmek için kurumunuz için tahsis edilen **API anahtarı**na ve taleplerin yapılacağı **IP adresi**nin API anahtarınıza ilişkilendirilmiş olması gerekmektedir. \n\n**Test Sorgu Adresi**\nhttps://staging-online.tim.org.tr/api/v1/external \n\n**Canlı Sorgu Adresi**\nhttps://online.tim.org.tr/api/v1/external/document/validate",
     "contact": {
       "name": "Performans Teknik Destek",
       "url": "https://www.performans.com",
