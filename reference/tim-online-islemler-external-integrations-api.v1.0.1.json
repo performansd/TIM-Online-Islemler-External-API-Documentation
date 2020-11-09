@@ -858,6 +858,308 @@
           "Barkodlu Belge İşlemleri"
         ]
       }
+    },
+    "/document/create/performance-reliability": {
+      "post": {
+        "summary": "Performans & Güvenilirlik Belgesi Oluşturma",
+        "operationId": "post-document-create-performance-reliability",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/DocumentModel"
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "İşlem durumu."
+                    },
+                    "statusCode": {
+                      "type": "number",
+                      "description": "İşlem durum kodu"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Varsa işlem durumuna ait mesaj. Hata mesajı vb."
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "success",
+                    "statusCode"
+                  ]
+                },
+                "examples": {
+                  "Örnek": {
+                    "value": {
+                      "data": {
+                        "id": "26902129-9267-4f4d-8b42-13a5e2599ed6",
+                        "code": "TME01-1F03-43E4-4609",
+                        "companyName": "AAA MAKİNA SAN. TİC. A. Ş. ",
+                        "taxNumber": "1234567890",
+                        "documentBody": null,
+                        "description": null,
+                        "documentTypeId": 5003,
+                        "documentTypeText": "Performans ve Güvenilirlik Belgesi",
+                        "requestedBy": "12345678901",
+                        "statusId": 5101,
+                        "statusText": "Hazırlanıyor"
+                      },
+                      "success": true,
+                      "type": "success",
+                      "statusCode": 200
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "",
+                "type": "object",
+                "properties": {
+                  "taxNumber": {
+                    "type": "string",
+                    "minLength": 10,
+                    "maxLength": 11,
+                    "description": "Belge alınacak firma vergi kimlik numarası"
+                  },
+                  "associationId": {
+                    "type": "string",
+                    "description": "Belgenin talep edileceği Genel Sekreterğin Online işlemler id'si. Bkz: Üyelik Sorgulama"
+                  },
+                  "parPeriod": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2018-01-01",
+                    "description": "Belgenin oluşturulaca dönemin başlangıç tarihi"
+                  },
+                  "requestedBy": {
+                    "type": "string",
+                    "description": "Belgeyi talep eden kişinin T.C. Kimlik numarası"
+                  }
+                },
+                "required": [
+                  "taxNumber",
+                  "associationId",
+                  "parPeriod"
+                ]
+              },
+              "examples": {
+                "Örnek": {
+                  "value": {
+                    "taxNumber": "1234567890",
+                    "associationId": "b56947b8-f54d-4e8c-94a5-c8d2265e3045",
+                    "parPeriod": "2018-11-01",
+                    "requestedBy": "12345678901"
+                  }
+                }
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "description": "",
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "companyName",
+                      "taxNumber",
+                      "documentTypeId",
+                      "documentTypeText",
+                      "requestedBy",
+                      "statusId",
+                      "statusText"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "code": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "companyName": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "taxNumber": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "documentBody": {},
+                      "description": {},
+                      "documentTypeId": {
+                        "type": "number"
+                      },
+                      "documentTypeText": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "requestedBy": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "statusId": {
+                        "type": "number"
+                      },
+                      "statusText": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  },
+                  "success": {
+                    "type": "boolean"
+                  },
+                  "statusCode": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "data",
+                  "success",
+                  "statusCode"
+                ]
+              },
+              "examples": {
+                "Örnek": {
+                  "value": "{\n    \"data\": {\n        \"id\": \"26902129-9267-4f4d-8b42-13a5e2599ed6\",\n        \"code\": \"TME01-1F03-43E4-4608\",\n        \"companyName\": \"AAA MAKİNA SAN. TİC. A. Ş. \",\n        \"taxNumber\": \"4661124647\",\n        \"documentBody\": null,\n        \"description\": null,\n        \"documentTypeId\": 5003,\n        \"documentTypeText\": \"Performans ve Güvenilirlik Belgesi\",\n        \"requestedBy\": \"23267355980\",\n        \"statusId\": 5101,\n        \"statusText\": \"Hazırlanıyor\"\n    },\n    \"success\": true,\n    \"statusCode\": 200\n}"
+                }
+              }
+            }
+          },
+          "description": ""
+        },
+        "description": "Bir firma için firmanın üyesi olduğu bir **Genel Sekreterlik**'ten **Performans & Güvenilirlik Belgesi** almak için kullanılır.\n\nBelgenin alınacağı **Genel Sekreterlik** Online İşlemler **`id`** değeri **`associationId`** parametresinde gönderilir. Parametre olarak gönderilen  **`id`** değeri firmanın üyesi olduğu ve belge alabileceği bir genel sekreterlik **`id`** 'si olmalıdır. \n\nFirmanın üyesi olduğu ve belge alma hakkı olan **Genel Sekreterlik** listesi  **Üyelik Sorgulama**  **`/company/memberships`** metodundan alınarak bu listede yer alan bir Genel Sekreterlik **`id`** değeri bu metoda gönderilmelidir\n\nBu belge, belge oluşturma komutu çağırılduğunda hemen oluşturulmayacaktır. Belgenin oluşturulması zaman aldığı için bu belge oluşturma işlemi sıraya alınarak sunucu tarafında oluşturulur. Bu nedenle sonuçta gelen documentBody parametresi her zaman boş olacaktır. Belgenin oluşturulma işleminin tamamlanıp tamamlanmadığına **Performans & Güvenilirlik Belgesi Listeleme** metodundan gelen sonuç listesin bakabilirsiniz.\n",
+        "tags": [
+          "Barkodlu Belge İşlemleri"
+        ]
+      }
+    },
+    "/documents/performansce-reliability": {
+      "post": {
+        "summary": "Performans ve Güvenilirlik Belgesi Lİstesi",
+        "operationId": "post-document-list-performansce-reliability",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "items": {
+                        "$ref": "#/components/schemas/DocumentModel"
+                      }
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "İşlem durumu"
+                    },
+                    "statusCode": {
+                      "type": "number",
+                      "description": "İşlem durum kodu"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "İşlem durum mesajı"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "success",
+                    "statusCode"
+                  ]
+                },
+                "examples": {
+                  "Örnek": {
+                    "value": {
+                      "data": [
+                        {
+                          "id": "26902129-9267-4f4d-8b42-13a5e2599ed6",
+                          "code": "TME01-1F03-43E4-4607",
+                          "companyName": "AAA MAKİNA SAN. TİC. A. Ş. ",
+                          "taxNumber": "1234567890",
+                          "description": "Dönem: 01.11.2018 - 31.10.2020",
+                          "languageCode": "tr",
+                          "languageName": "Türkçe",
+                          "statusId": 5110,
+                          "statusText": "Oluşturulmuş",
+                          "documentTypeId": 5003,
+                          "documentTypeText": "Performans ve Güvenilirlik Belgesi",
+                          "createdOn": "2020-11-09T05:58:27.8160316Z"
+                        },
+                        {
+                          "id": "26902129-9267-4f4d-8b42-13a5e2599ed7",
+                          "code": "TME01-1F03-43E4-4607",
+                          "companyName": "AAA MAKİNA SAN. TİC. A. Ş. ",
+                          "taxNumber": "1234567890",
+                          "description": "Dönem: 01.11.2018 - 31.10.2020",
+                          "languageCode": "tr",
+                          "languageName": "Türkçe",
+                          "statusId": 5100,
+                          "statusText": "Hazırlanıyor",
+                          "documentTypeId": 5003,
+                          "documentTypeText": "Performans ve Güvenilirlik Belgesi",
+                          "createdOn": "2020-11-09T05:58:27.8160316Z"
+                        }
+                      ],
+                      "success": true,
+                      "statusCode": 200
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "description": "Kullanıcı tarafından belirli bir firma için oluşturulmuş **Performans ve Güvenilirlik Belgesi** listesini almak için kullanılır.",
+        "tags": [
+          "Barkodlu Belge İşlemleri"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaxNumberRequest"
+              },
+              "examples": {
+                "Örnek": {
+                  "value": {
+                    "taxNumber": "1234567891",
+                    "requestedBy": "12345678901"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": []
     }
   },
   "components": {
@@ -1068,6 +1370,93 @@
           }
         },
         "description": "Barkodlu bir belge oluşturulurken gönderilen parametreleri içerir. Her belge için fakrlı parametre"
+      },
+      "DocumentModel": {
+        "description": "",
+        "type": "object",
+        "x-examples": {
+          "Yeni Oluşturulmuş Belge": {
+            "id": "26902129-9267-4f4d-8b42-13a5e2599ed6",
+            "code": "TME01-1F03-43E4-4609",
+            "companyName": "AAA MAKİNA SAN. TİC. A. Ş. ",
+            "taxNumber": "1234567890",
+            "documentBody": null,
+            "description": null,
+            "documentTypeId": 5003,
+            "documentTypeText": "Performans ve Güvenilirlik Belgesi",
+            "requestedBy": "12345678901",
+            "statusId": 5101,
+            "statusText": "Hazırlanıyor"
+          },
+          "Oluşturulmuş Belge": {
+            "id": "26902129-9267-4f4d-8b42-13a5e2599ed6",
+            "code": "TME01-1F03-43E4-4609",
+            "companyName": "AAA MAKİNA SAN. TİC. A. Ş. ",
+            "taxNumber": "1234567890",
+            "documentBody": null,
+            "description": null,
+            "documentTypeId": 5003,
+            "documentTypeText": "Performans ve Güvenilirlik Belgesi",
+            "requestedBy": "12345678901",
+            "statusId": 5101,
+            "statusText": "Hazırlanıyor"
+          }
+        },
+        "title": "Barkodlu Belge Modeli",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Belge Id"
+          },
+          "code": {
+            "type": "string",
+            "description": "Belge kodu"
+          },
+          "companyName": {
+            "type": "string",
+            "description": "Belgenin düzenlendiği firma unvanı"
+          },
+          "taxNumber": {
+            "type": "string",
+            "description": "Belgenin düzenlendiği firma vergi kimlik no"
+          },
+          "documentBody": {
+            "description": "Base64 formatında belge içeriği. Eğer belge henüz oluşturulmamış ise bu alan boş olacaktır"
+          },
+          "description": {
+            "description": "Belge ile ilgili ek açıklama içerir\n\n- Performans & Güvenilirlik Belgesi için bu alanda belgenin dönemi yer alır\n- Üye Bilgi Yazısı Belgesi için bu alanda belge dili ve belgenin alındığı İhracatçı Birliği adı yer alır."
+          },
+          "documentTypeId": {
+            "type": "number",
+            "description": "Belge tipi kodu"
+          },
+          "documentTypeText": {
+            "type": "string",
+            "description": "Belge tipi adı"
+          },
+          "requestedBy": {
+            "type": "string"
+          },
+          "statusId": {
+            "type": "number",
+            "description": "Belge durum kodu"
+          },
+          "statusText": {
+            "type": "string",
+            "description": "Belge oluşturma durumu"
+          }
+        },
+        "required": [
+          "id",
+          "code",
+          "companyName",
+          "taxNumber",
+          "documentTypeId",
+          "documentTypeText",
+          "requestedBy",
+          "statusId",
+          "statusText"
+        ]
       }
     },
     "securitySchemes": {
