@@ -158,7 +158,7 @@
                     "type": "boolean",
                     "description": "Sorgu sonucunda sadece firmanın belge alabileceği birlik üyeliklerini almak için kullanılır. Bu parametrenin true değerinde gönderilmesi halinde firmanın sadece Üyelik Belgesi, Üye Bilgi Yazısı vb. belgeleri alabileceği birliklerin listesi filitrelmiş oalrak geri dönecektir."
                   },
-                  "tckn": {
+                  "requestedBy": {
                     "type": "string",
                     "description": "Sorguyu yapan kişinin T.C. Kimlik numarası"
                   }
@@ -1050,7 +1050,7 @@
         ]
       }
     },
-    "/documents/performansce-reliability": {
+    "/documents/performance-reliability": {
       "post": {
         "summary": "Performans ve Güvenilirlik Belgesi Lİstesi",
         "operationId": "post-document-list-performansce-reliability",
@@ -1161,7 +1161,7 @@
       },
       "parameters": []
     },
-    "/document/par-periods": {
+    "/document/performance-reliability/periods": {
       "get": {
         "summary": "Performans ve Güvenilirlik Belgesi Oluşturma Periyot Listesi",
         "tags": [],
@@ -1240,7 +1240,8 @@
         },
         "operationId": "get-document-par-periods",
         "description": "PErformans ve Güvenilirlik belgesi oluşturulma işleminde gönderilebilecek belgenin oluşturulacağı dönemlere ait listeyi almak için kullanılır. "
-      }
+      },
+      "parameters": []
     }
   },
   "components": {
