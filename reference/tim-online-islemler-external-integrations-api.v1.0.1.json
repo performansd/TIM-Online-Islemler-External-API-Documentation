@@ -1239,6 +1239,113 @@
         "description": "PErformans ve Güvenilirlik belgesi oluşturulma işleminde gönderilebilecek belgenin oluşturulacağı dönemlere ait listeyi almak için kullanılır. "
       },
       "parameters": []
+    },
+    "/documents/membership-info/language-list": {
+      "get": {
+        "summary": "Üye Bilgi Yazısı Dil Listesi",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "minItems": 1,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": "string",
+                            "description": "ISO2 dil kodu",
+                            "maxLength": 2,
+                            "minLength": 2
+                          },
+                          "text": {
+                            "type": "string",
+                            "description": "Dil adı"
+                          }
+                        },
+                        "required": [
+                          "value",
+                          "text"
+                        ]
+                      }
+                    },
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "statusCode": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "success",
+                    "statusCode"
+                  ]
+                },
+                "examples": {
+                  "Örnek": {
+                    "value": {
+                      "data": [
+                        {
+                          "value": "de",
+                          "text": "Almanca"
+                        },
+                        {
+                          "value": "ar",
+                          "text": "Arapça"
+                        },
+                        {
+                          "value": "zh",
+                          "text": "Çince"
+                        },
+                        {
+                          "value": "fr",
+                          "text": "Fransızca"
+                        },
+                        {
+                          "value": "en",
+                          "text": "İngilizce"
+                        },
+                        {
+                          "value": "es",
+                          "text": "İspanyolca"
+                        },
+                        {
+                          "value": "it",
+                          "text": "İtalyanca"
+                        },
+                        {
+                          "value": "ja",
+                          "text": "Japonca"
+                        },
+                        {
+                          "value": "ru",
+                          "text": "Rusça"
+                        },
+                        {
+                          "value": "tr",
+                          "text": "Türkçe"
+                        }
+                      ],
+                      "success": true,
+                      "statusCode": 200
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-documents-membership-info-language-list"
+      }
     }
   },
   "components": {
