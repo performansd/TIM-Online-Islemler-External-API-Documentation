@@ -335,7 +335,7 @@
             }
           }
         },
-        "description": "Belge kodu ile belgenin doğruluğunu sorgulamak için kullanılır. ",
+        "description": "Belge kodu ile belgenin doğruluğunu sorgulamak için kullanılır. \n\n**includeContent** parametresi true oalrak sorgulanır ise belge içeriği **base64** formatında **documentBody** parametresinden alınabilir",
         "parameters": [],
         "requestBody": {
           "content": {
@@ -1044,7 +1044,7 @@
           },
           "description": ""
         },
-        "description": "Bir firma için firmanın üyesi olduğu bir **Genel Sekreterlik**'ten **Performans & Güvenilirlik Belgesi** almak için kullanılır.\n\nBelgenin alınacağı **Genel Sekreterlik** Online İşlemler **`id`** değeri **`associationId`** parametresinde gönderilir. Parametre olarak gönderilen  **`id`** değeri firmanın üyesi olduğu ve belge alabileceği bir genel sekreterlik **`id`** 'si olmalıdır. \n\nFirmanın üyesi olduğu ve belge alma hakkı olan **Genel Sekreterlik** listesi  **Üyelik Sorgulama**  **`/company/memberships`** metodundan alınarak bu listede yer alan bir Genel Sekreterlik **`id`** değeri bu metoda gönderilmelidir\n\nBu belge, belge oluşturma komutu çağırılduğunda hemen oluşturulmayacaktır. Belgenin oluşturulması zaman aldığı için bu belge oluşturma işlemi sıraya alınarak sunucu tarafında oluşturulur. Bu nedenle sonuçta gelen documentBody parametresi her zaman boş olacaktır. Belgenin oluşturulma işleminin tamamlanıp tamamlanmadığına **Performans & Güvenilirlik Belgesi Listeleme** metodundan gelen sonuç listesin bakabilirsiniz.\n",
+        "description": "Bir firma için firmanın üyesi olduğu bir **Genel Sekreterlik**'ten **Performans & Güvenilirlik Belgesi** almak için kullanılır.\n\nBelgenin alınacağı **Genel Sekreterlik** Online İşlemler **`id`** değeri **`associationId`** parametresinde gönderilir. Parametre olarak gönderilen  **`id`** değeri firmanın üyesi olduğu ve belge alabileceği bir genel sekreterlik **`id`** 'si olmalıdır. \n\nFirmanın üyesi olduğu ve belge alma hakkı olan **Genel Sekreterlik** listesi  **Üyelik Sorgulama**  **`/company/memberships`** metodundan alınarak bu listede yer alan bir Genel Sekreterlik **`id`** değeri bu metoda gönderilmelidir\n\nBelgenin ait olduğu dönem **`parPeriod`** parametresinde belirtilecek geçerli tarih değeri ise **Performans ve Güvenilirlik Belgesi Oluşturma Periyot Listesi** metodu sonucundaki listeden birisi olmalıdır.\n\nBu belge, belge oluşturma komutu çağırılduğunda hemen oluşturulmayacaktır. Belgenin oluşturulması zaman aldığı için bu belge oluşturma işlemi sıraya alınarak sunucu tarafında oluşturulur. Bu nedenle sonuçta gelen documentBody parametresi her zaman boş olacaktır. Belgenin oluşturulma işleminin tamamlanıp tamamlanmadığına **Performans & Güvenilirlik Belgesi Listeleme** metodundan gelen sonuç listesin bakabilirsiniz.",
         "tags": [
           "Barkodlu Belge İşlemleri"
         ]
@@ -1160,6 +1160,87 @@
         }
       },
       "parameters": []
+    },
+    "/document/par-periods": {
+      "get": {
+        "summary": "Performans ve Güvenilirlik Belgesi Oluşturma Periyot Listesi",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "minItems": 1,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": "string",
+                            "description": "Değer (metoda bu değer gönderilmelidir) ISO 8601 formatında tarih değeridir",
+                            "format": "date"
+                          },
+                          "text": {
+                            "type": "string",
+                            "description": "Kullanıcıya listede gösterliecek metin"
+                          }
+                        },
+                        "required": [
+                          "value",
+                          "text"
+                        ]
+                      }
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "İşlem durumu"
+                    },
+                    "statusCode": {
+                      "type": "number",
+                      "description": "İşlem durum kodu"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "success",
+                    "statusCode"
+                  ]
+                },
+                "examples": {
+                  "Örnek": {
+                    "value": {
+                      "data": [
+                        {
+                          "value": "2018-11-01",
+                          "text": "01 Kasım 2018 - 01 Kasım 2020"
+                        },
+                        {
+                          "value": "2018-10-01",
+                          "text": "01 Ekim 2018 - 01 Ekim 2020"
+                        },
+                        {
+                          "value": "2018-09-01",
+                          "text": "01 Eylül 2018 - 01 Eylül 2020"
+                        }
+                      ],
+                      "success": true,
+                      "statusCode": 200
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-document-par-periods",
+        "description": "PErformans ve Güvenilirlik belgesi oluşturulma işleminde gönderilebilecek belgenin oluşturulacağı dönemlere ait listeyi almak için kullanılır. "
+      }
     }
   },
   "components": {
