@@ -9,9 +9,6 @@
     },
     {
       "name": "Üye İşlemleri"
-    },
-    {
-      "name": "Üye Bilgi Yazısı Alma"
     }
   ],
   "info": {
@@ -645,8 +642,7 @@
         },
         "description": "Üye bilgi yazısı oluşturulmadan önce belge içeriğinde yer alacak değerleri görmek için kulanılır.",
         "tags": [
-          "Barkodlu Belge İşlemleri",
-          "Üye Bilgi Yazısı Alma"
+          "Barkodlu Belge İşlemleri"
         ]
       }
     },
@@ -716,8 +712,7 @@
           }
         },
         "tags": [
-          "Barkodlu Belge İşlemleri",
-          "Üye Bilgi Yazısı Alma"
+          "Barkodlu Belge İşlemleri"
         ]
       }
     },
@@ -859,8 +854,7 @@
           }
         },
         "tags": [
-          "Barkodlu Belge İşlemleri",
-          "Üye Bilgi Yazısı Alma"
+          "Barkodlu Belge İşlemleri"
         ]
       }
     }
