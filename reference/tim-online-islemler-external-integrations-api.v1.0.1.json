@@ -1243,7 +1243,9 @@
     "/documents/membership-info/language-list": {
       "get": {
         "summary": "Üye Bilgi Yazısı Dil Listesi",
-        "tags": [],
+        "tags": [
+          "Barkodlu Belge İşlemleri"
+        ],
         "responses": {
           "200": {
             "description": "OK",
