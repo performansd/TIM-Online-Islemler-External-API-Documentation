@@ -1346,7 +1346,8 @@
             }
           }
         },
-        "operationId": "get-documents-membership-info-language-list"
+        "operationId": "get-documents-membership-info-language-list",
+        "description": "**TİM Online İşlemler API** ile üretilebilicek geçerli **Üye Bilgi Yazısı Belgesi** dilleri"
       }
     }
   },
