@@ -335,7 +335,7 @@
             }
           }
         },
-        "description": "Belge kodu ile belgenin doğruluğunu sorgulamak için kullanılır. \n\n**includeContent** parametresi true oalrak sorgulanır ise belge içeriği **base64** formatında **documentBody** parametresinden alınabilir",
+        "description": "Belge kodu ile belgenin doğruluğunu sorgulamak için kullanılır. \n\nİstenirse **includeContent** parametresi true oalrak sorgulanır ise belge içeriği **base64** formatında **documentBody** parametresinden alınabilir",
         "parameters": [],
         "requestBody": {
           "content": {
