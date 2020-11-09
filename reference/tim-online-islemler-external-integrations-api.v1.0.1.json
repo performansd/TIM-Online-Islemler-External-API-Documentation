@@ -6,7 +6,7 @@
     },
     {
       "name": "Barkodlu Belge İşlemleri",
-      "description":"Barkodlu belge oluşturmak için gerekli metotlar"
+      "description": "Barkodlu belge oluşturmak için gerekli metotlar"
     },
     {
       "name": "Üye İşlemleri"
@@ -641,7 +641,7 @@
             }
           }
         },
-        "description": "Üye bilgi yazısı oluşturulmadan önce belge içeriğinde yer alacak değerleri görmek için kulanılır.",
+        "description": "Bir firma adına **Üye Bilgi Yazısı** oluşturulmadan önce belge içeriğinde yer alacak değerleri görmek için kulanılır. \n\nBelgenin alınacağı birliğe ait **`id`** değeri **`associationId`** parametresinde gönderilir.  Parametre olarak gönderilen id değeri firmanın üyesi olduğu ve belge alabileceği bir biliğin id'si olmalıdır. \n\nFirmanın üyesi olduğu ve belge alma hakkı olan birliklerin listesi  **Üyelik Sorgulama**  **`/company/memberships`** metodundan alınarak bu listede yer alan bir birliğin **`id`** değeri bu metoda gönderilmelidir\n\n**Desteklenen Diller**\nBu metodun lang parametresinde gönderilebilecek diller aşağıdaki gibidir\n\n| DİL KODU       |ADI                            \n|----------------|-------------------------------\n|tr              |Türkçe            \n|ar              |Arapça            \n|de              |Almanca\n|en              |İngilizce\n|es              |İspanyolca\n|fr              |Fransızca\n|it              |İtayanca\n|ja              |Japonca\n|ru              |Rusça\n|zh              |Çince\n\n\n",
         "tags": [
           "Barkodlu Belge İşlemleri"
         ]
