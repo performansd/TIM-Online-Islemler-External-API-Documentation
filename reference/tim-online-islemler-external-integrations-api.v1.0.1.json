@@ -180,7 +180,7 @@
                     "requestedBy": "12345678901"
                   }
                 },
-                "Üye Bilgi Yazısı Alınabilecek Birlikler": {
+                "Üye Bilgi Yazısı ya da Üyelik Belgesi Alınabilecek Birlikler": {
                   "value": {
                     "taxNumber": "1234567891",
                     "gs": false,
@@ -1346,6 +1346,300 @@
         },
         "operationId": "get-documents-membership-info-language-list",
         "description": "**TİM Online İşlemler API** ile üretilebilicek geçerli **Üye Bilgi Yazısı Belgesi** dilleri"
+      }
+    },
+    "/documents/membership": {
+      "post": {
+        "summary": "Üyelik Belgesi Listesi",
+        "operationId": "post-documents-membership",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "items": {
+                        "$ref": "#/components/schemas/DocumentModel"
+                      }
+                    },
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "statusCode": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "success",
+                    "statusCode"
+                  ]
+                },
+                "examples": {
+                  "Örnek": {
+                    "value": {
+                      "data": [
+                        {
+                          "id": "bb7d466c-ecec-46ef-becb-211e1c42d9a3",
+                          "code": "TME01-6A30-C208-4C3A",
+                          "companyName": "AAA MAKİNA SAN. TİC. A. Ş. ",
+                          "taxNumber": "1234567890",
+                          "description": null,
+                          "documentTypeId": 5001,
+                          "documentTypeText": "Üyelik Belgesi",
+                          "statusId": 5110,
+                          "statusText": "Oluşturulmuş",
+                          "memberOf": [
+                            {
+                              "registrationNumber": 9050,
+                              "registrationDate": "2002-07-20T00:00:00",
+                              "associationId": "700d5465-4b24-46a3-a5ce-dde7b43a1f8f",
+                              "associationName": "Makine ve Aksamları İhracatçıları Birliği "
+                            }
+                          ],
+                          "languageCode": "tr",
+                          "languageName": "Türkçe",
+                          "createdOn": "2020-11-07T12:39:20.4797319Z"
+                        }
+                      ],
+                      "success": true,
+                      "statusCode": 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Kullanıcı tarafından belirli bir firma için oluşturulmuş **Üyelik Belgeleri** listesini almak için kullanılır.",
+        "tags": [
+          "Barkodlu Belge İşlemleri"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaxNumberRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/document/info/membership": {
+      "post": {
+        "summary": "Üyelik Belgesi Bilgi Sorgulama",
+        "operationId": "post-document-info-membership",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "memberships",
+                        "name",
+                        "taxNumber"
+                      ],
+                      "properties": {
+                        "memberships": {
+                          "type": "array",
+                          "uniqueItems": true,
+                          "minItems": 1,
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "associationName": {
+                                "type": "string",
+                                "minLength": 1,
+                                "description": "Birlik adı"
+                              },
+                              "registrationDate": {
+                                "type": "string",
+                                "description": "ISO8601 formatında üyelik tarihi",
+                                "format": "date"
+                              },
+                              "registrationNumber": {
+                                "type": "integer",
+                                "description": "Üye sicil no"
+                              }
+                            },
+                            "required": [
+                              "associationName",
+                              "registrationDate",
+                              "registrationNumber"
+                            ]
+                          }
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "Belge alınacak firma unvanı"
+                        },
+                        "taxNumber": {
+                          "type": "string",
+                          "description": "Firma vergi numarası"
+                        }
+                      }
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "İşlem durumu"
+                    },
+                    "statusCode": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "success",
+                    "statusCode"
+                  ]
+                },
+                "examples": {
+                  "Örnek": {
+                    "value": {
+                      "data": {
+                        "memberships": [
+                          {
+                            "associationName": "Makine ve Aksamları İhracatçıları Birliği ",
+                            "registrationDate": "2002-07-20T00:00:00",
+                            "registrationNumber": 1234
+                          }
+                        ],
+                        "name": "AAA MAKİNA SAN. TİC. A. Ş. ",
+                        "taxNumber": "1234567890"
+                      },
+                      "success": true,
+                      "statusCode": 200
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Sorgulanan vergi numarası ile kayıtlı bir ihracatçı firma olmaması durumunda alınacak sonuçtur"
+          }
+        },
+        "description": "**Üyelik Belgesi** oluşturulmadan önce belgede yer alacak bilgileri sorgulamak için kullanılır.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaxNumberRequest"
+              }
+            }
+          },
+          "description": ""
+        }
+      }
+    },
+    "/document/create/membership": {
+      "post": {
+        "summary": "Üyelik Belgesi Oluşturma",
+        "operationId": "post-document-create-membership",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/DocumentModel"
+                    },
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "statusCode": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "success",
+                    "statusCode"
+                  ]
+                },
+                "examples": {
+                  "Örnek": {
+                    "value": {
+                      "data": {
+                        "id": "ad10769c-06d1-4763-b273-5c85450f023a",
+                        "code": "TME01-F960-06D0-499F",
+                        "companyName": "AAA MAKİNA SAN. TİC. A. Ş. ",
+                        "taxNumber": "1234567890",
+                        "documentBody": "JVBERi0x............UlRU9GDQo=",
+                        "description": null,
+                        "documentTypeId": 5001,
+                        "documentTypeText": "Üyelik Belgesi",
+                        "statusId": 5110,
+                        "statusText": "Oluşturulmuş",
+                        "memberOf": [
+                          {
+                            "registrationNumber": 1234,
+                            "registrationDate": "2002-07-20T00:00:00",
+                            "associationId": "700d5465-4b24-46a3-a5ce-dde7b43a1f8f",
+                            "associationName": "Makine ve Aksamları İhracatçıları Birliği "
+                          }
+                        ],
+                        "languageCode": "tr",
+                        "languageName": "Türkçe",
+                        "createdOn": "2020-11-10T07:41:34.3130567Z"
+                      },
+                      "success": true,
+                      "statusCode": 200
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "İhracatçı firma kaydı olmaması durumunda verilen cevaptır"
+          },
+          "422": {
+            "description": "Girilen sorgu parametrelerinin hatalı olması durumunda verilen cevaptır"
+          },
+          "500": {
+            "description": "Sunucu tarafında bir hata olması durumunda verilen cevaptır"
+          }
+        },
+        "description": "Belirli bir ihracatçı birliğinden belirli bir dilde **Üyelik Belgesi** oluşturmak için kullanılır.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaxNumberRequest"
+              }
+            }
+          }
+        }
       }
     }
   },
