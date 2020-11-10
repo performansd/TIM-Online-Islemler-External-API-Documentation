@@ -1548,7 +1548,10 @@
             }
           },
           "description": ""
-        }
+        },
+        "tags": [
+          "Barkodlu Belge İşlemleri"
+        ]
       }
     },
     "/document/create/membership": {
@@ -1639,7 +1642,10 @@
               }
             }
           }
-        }
+        },
+        "tags": [
+          "Barkodlu Belge İşlemleri"
+        ]
       }
     }
   },
