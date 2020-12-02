@@ -1441,9 +1441,7 @@
                   "statusCode"
                 ]
               },
-              "examples": {
-
-              }
+              "examples": {}
             }
           },
           "description": ""
@@ -1654,6 +1652,49 @@
         "description": "PErformans ve Güvenilirlik belgesi oluşturulma işleminde gönderilebilecek belgenin oluşturulacağı dönemlere ait listeyi almak için kullanılır. "
       },
       "parameters": []
+    },
+    "/document/download/{id}": {
+      "get": {
+        "summary": "Belge İndirme",
+        "tags": [
+          "Barkodlu Belge İşlemleri"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "operationId": "get-document-download",
+        "description": "BElge oluşturma metotlarından herhangi birisi ile oluşturulmuş bir belgeyi indirmek için kullanılır. "
+      },
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "Guid tipinde barkodlu bele TİM Online İşlemler Id'si"
+        }
+      ]
     }
   },
   "components": {
