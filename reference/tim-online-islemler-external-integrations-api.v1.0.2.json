@@ -1682,7 +1682,7 @@
           }
         },
         "operationId": "get-document-download",
-        "description": "BElge oluşturma metotlarından herhangi birisi ile oluşturulmuş bir belgeyi indirmek için kullanılır. "
+        "description": "Belge oluşturma metotlarından herhangi birisi ile oluşturulmuş bir belgeyi indirmek için kullanılır. "
       },
       "parameters": [
         {
@@ -1692,7 +1692,7 @@
           "name": "id",
           "in": "path",
           "required": true,
-          "description": "Guid tipinde barkodlu bele TİM Online İşlemler Id'si"
+          "description": "Guid tipinde barkodlu belge TİM Online İşlemler Id'si"
         }
       ]
     }
