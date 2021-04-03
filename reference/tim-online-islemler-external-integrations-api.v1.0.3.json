@@ -12,7 +12,7 @@
   ],
   "info": {
     "title": "TİM Online İşlemler - Entegrasyon API",
-    "version": "1.0",
+    "version": "1.0.3",
     "description": "**TİM Online İşlemler** üzerinden sağlanan hizmetlerden diğer kurumların yazılım altyapıları ile entegrasyon sağlamak için kullanılan API metotları ve bu metotların nasıl kullanıldığına dair bilgileri içermektedir.\n\nBu servisleri kulalnabilmek için kurumunuz için tahsis edilen **API anahtarı**na ve taleplerin yapılacağı **IP adresi**nin API anahtarınıza ilişkilendirilmiş olması gerekmektedir. \n\n**Test Sorgu Adresi**\nhttps://staging-online.tim.org.tr/api/v1/external \n\n**Canlı Sorgu Adresi**\nhttps://online.tim.org.tr/api/v1/external/document/validate",
     "contact": {
       "name": "Performans Teknik Destek",
@@ -1695,6 +1695,197 @@
           "description": "Guid tipinde barkodlu belge TİM Online İşlemler Id'si"
         }
       ]
+    },
+    "/user/validate": {
+      "post": {
+        "summary": "Kullanıcı Doğrulama",
+        "operationId": "post-user-validate",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "email",
+                        "identityNumber",
+                        "phone",
+                        "fullName",
+                        "userTypeId",
+                        "companies"
+                      ],
+                      "description": "Sorgu sonucunda eğer uygun bir kullanıcı var ise o kullanıcıya ait bilgileri içerir",
+                      "properties": {
+                        "email": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Kullanıcı e-posta adresi"
+                        },
+                        "identityNumber": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Kullanıcı T.C. Kimlik numarası"
+                        },
+                        "phone": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Telefon numarası"
+                        },
+                        "fullName": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Adı Soyadı"
+                        },
+                        "userTypeId": {
+                          "type": "number",
+                          "description": "Kullanıcı tipi\n\n4002: Sistem Yöneticisi\n4003: Genek Sekreterlik Kullanıcısı\n4004: Birlik Kullanıcısı\n4005: Kosgeb Sorgu Kullanıcısı\n4006: Firma Kullanıcısı\n4007: Gümrük Müşaviri Kullanıcısı"
+                        },
+                        "companies": {
+                          "type": "array",
+                          "uniqueItems": true,
+                          "minItems": 1,
+                          "description": "Kullanıcının adına işlem yapma yetkisinin olduğu firmalar listesi",
+                          "items": {
+                            "type": "object",
+                            "description": "Firma bilgisi",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "minLength": 1,
+                                "description": "Firma Id (UUID)"
+                              },
+                              "name": {
+                                "type": "string",
+                                "minLength": 1,
+                                "description": "Firma unvanı"
+                              },
+                              "taxNumber": {
+                                "type": "string",
+                                "minLength": 1,
+                                "description": "Firma vergi numarası"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "name",
+                              "taxNumber"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "success": {
+                      "type": "boolean",
+                      "description": "İşlem durumu"
+                    },
+                    "statusCode": {
+                      "type": "number",
+                      "description": "Durum kodu"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "İşlem durumuna bağlı mesaj"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "success",
+                    "statusCode"
+                  ]
+                },
+                "examples": {
+                  "Başarılı İşlem Sonucu": {
+                    "value": {
+                      "data": {
+                        "email": "mehmet@mytekstil.com",
+                        "identityNumber": "11122222222",
+                        "phone": "5671234567",
+                        "fullName": "Mehmet Yıldırım",
+                        "userTypeId": 4006,
+                        "companies": [
+                          {
+                            "id": "3741a2c9-ca19-f642-bf30-afg91c53efbb",
+                            "name": "MEHMET YILDIRIM VE ORTAĞI - MY TEKSTİL",
+                            "taxNumber": "12345678901"
+                          },
+                          {
+                            "id": "0fg3ea3a-a2ea-c789-a192-19204560392c",
+                            "name": "PERDE SİSTEMLERİ SAN. VE TİC. LTD. ŞTİ.",
+                            "taxNumber": "1234567890"
+                          }
+                        ]
+                      },
+                      "success": true,
+                      "statusCode": 200
+                    }
+                  },
+                  "Kullanıcınon Olmadığı İşlem Sonucu": {
+                    "value": {
+                      "success": false,
+                      "message": "Kayıt bulunamadı",
+                      "statusCode": 404
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "description": "E-posta adresi ve T.C. Kimlik numarası ile kullanıcı sorgulamak ve kullanıcının online işlemlerde adına işlem yapma yetkisinin olduğu firmaları almak için kullanılan metottur. ",
+        "tags": [
+          "Üye İşlemleri"
+        ],
+        "security": [
+          {
+            "X-Api-Key": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "",
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Sorgulanacak kullanıcıya ait e-posta adresi"
+                  },
+                  "identityNumber": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Sorgulanacak kullanıcının T.C. Kimlik Numarası"
+                  }
+                },
+                "required": [
+                  "email",
+                  "identityNumber"
+                ]
+              },
+              "examples": {
+                "Örnek Sorgu": {
+                  "value": {
+                    "email": "example@example.com",
+                    "identityNumber": "12345678901"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
